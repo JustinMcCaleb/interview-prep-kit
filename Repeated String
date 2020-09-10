@@ -1,0 +1,72 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the repeatedString function below.
+    static long repeatedString(String s, long n) {
+        //grabbing total number of times s can be added to itself before reaching n length
+        long whole = n / s.length();
+        //grabbing remainder to add (if not 0) a substring of the remaining characters in s so that s.length() will equal n
+        int remainder = (int) (n % s.length());
+        //variable and loop to find out how many 'a' in original string s
+        long found = 0;
+        for(char ch : s.toCharArray()){
+            if(ch == 'a'){
+                found++;
+            }
+        }
+        //calculating the total number of 'a' by taking the number of 'a' in original s string and multiplying it by how many times the original string will fit into n. If there is a remainder, then a substring will be made that fullfills the length of s to equal n and any additional 'a' will be counted and added to the total
+        long total = found * whole;
+        if(remainder == 0){
+            return total;
+        }else{
+            String part = s.substring(0, remainder);
+            for(char ch : part.toCharArray()){
+                if(ch == 'a'){
+                    total++;
+                }
+            }
+        }
+        return total;
+
+        //original written code. Did NOT meat time requirements 
+        // long numOfA = 0;
+        // String newString = s;
+        // for(int j = 0; newString.length() <= n; j++){
+        //     newString += s;
+        // }
+        // String trimmed = newString.substring(0, ((int) (n + 1)));
+        // for(int k = 0; k <= (trimmed.length() - 1); k++){
+        //     if(trimmed.charAt(k) == 'a'){
+        //         numOfA++;
+        //     }
+        // }
+        // return numOfA;
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String s = scanner.nextLine();
+
+        long n = scanner.nextLong();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        long result = repeatedString(s, n);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
